@@ -1,33 +1,35 @@
 #pragma once
+
 #include <string>
-#include <memory>
+#include <cstdint>
+#include <ostream>
 
 class Integer {
+    int32_t value;
 public:
     static constexpr int MIN_VALUE = INT32_MIN;
     static constexpr int MAX_VALUE = INT32_MAX;
 
-    Integer(int v) : value(v) {}
+    constexpr Integer() noexcept : value(0) {}
+    constexpr Integer(int32_t v) noexcept : value(v) {}
 
-    operator int() const { return value; }
+    constexpr operator int() const noexcept { return value; }
+    constexpr Integer& operator=(int32_t v) noexcept { value = v; return *this; }
 
-    int compareTo(const Integer& other) const;
-    bool equals(const Integer& other) const;
+    constexpr Integer& operator+=(int32_t v) noexcept { value += v; return *this; }
+    constexpr Integer& operator*=(int32_t v) noexcept { value *= v; return *this; }
 
-    std::size_t hashCode() const;
+    constexpr Integer operator+(const Integer& o) const noexcept { return Integer(value + o.value); }
+    constexpr Integer operator*(const Integer& o) const noexcept { return Integer(value * o.value); }
 
-    static Integer valueOf(int v);
+    [[nodiscard]] std::string toString() const;
+    [[nodiscard]] static std::string toString(int v);
+
     static int parseInt(const std::string& s);
-    static std::string toStringStatic(int v);
+    static const Integer& valueOf(int v);
 
-    static int max(int a, int b);
-    static int min(int a, int b);
+    constexpr bool operator==(const Integer& other) const noexcept { return value == other.value; }
+    constexpr bool operator!=(const Integer& other) const noexcept { return value != other.value; }
 
-private:
-    int value;
-    static Integer* cache[];
-    static constexpr int CACHE_LOW = -128;
-    static constexpr int CACHE_HIGH = 127;
-    static void initCache();
-    static bool cacheInitialized;
+    friend std::ostream& operator<<(std::ostream& os, const Integer& i) {return os << static_cast<int>(i);}
 };
