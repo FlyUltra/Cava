@@ -11,16 +11,16 @@ public:
     static constexpr int MAX_VALUE = INT32_MAX;
 
     constexpr Integer() noexcept : value(0) {}
-    constexpr Integer(int32_t v) noexcept : value(v) {}
+    constexpr Integer(const int32_t v) noexcept : value(v) {} // ALLOW_IMPLICIT_CONVERSION
 
-    constexpr operator int() const noexcept { return value; }
-    constexpr Integer& operator=(int32_t v) noexcept { value = v; return *this; }
+    constexpr explicit operator int() const noexcept { return value; }
+    constexpr Integer& operator=(const int32_t v) noexcept { value = v; return *this; }
 
-    constexpr Integer& operator+=(int32_t v) noexcept { value += v; return *this; }
-    constexpr Integer& operator*=(int32_t v) noexcept { value *= v; return *this; }
+    constexpr Integer& operator+=(const int32_t v) noexcept { value += v; return *this; }
+    constexpr Integer& operator*=(const int32_t v) noexcept { value *= v; return *this; }
 
-    constexpr Integer operator+(const Integer& o) const noexcept { return Integer(value + o.value); }
-    constexpr Integer operator*(const Integer& o) const noexcept { return Integer(value * o.value); }
+    constexpr Integer operator+(const Integer& o) const noexcept { return {value + o.value}; }
+    constexpr Integer operator*(const Integer& o) const noexcept { return {value * o.value}; }
 
     [[nodiscard]] std::string toString() const;
     [[nodiscard]] static std::string toString(int v);
