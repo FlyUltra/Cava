@@ -7,10 +7,10 @@
 class Integer {
     int32_t value;
 public:
+    Integer() = default;
     static constexpr int MIN_VALUE = INT32_MIN;
     static constexpr int MAX_VALUE = INT32_MAX;
 
-    constexpr Integer() noexcept : value(0) {}
     constexpr Integer(const int32_t v) noexcept : value(v) {} // ALLOW_IMPLICIT_CONVERSION
 
     constexpr explicit operator int() const noexcept { return value; }
